@@ -5,9 +5,9 @@
     "outDir": "dist",
     "rootDir": "src",
     "sourceMap": true,
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "types": [
       "node",
