@@ -1,6 +1,8 @@
 import {
     Component,
-    Input
+    Input,
+    Output,
+    EventEmitter
 } from '@angular/core'
 
 @Component({
@@ -62,16 +64,19 @@ import {
 })
 
 export class NoteCard {
+    // todo Create Note class with fields, onChecked log the field names.
     @Input() note = {};
+    @Output() checked = new EventEmitter();
     showCheck: boolean = false;
 
 
-    toggleCheck(){
+    toggleCheck() {
         this.showCheck = !this.showCheck;
     }
 
     // cannot be static...
     onChecked() {
-        console.log('note clicked.');
+        this.checked.next(this.note);
+        // console.log('note clicked.');
     }
 }

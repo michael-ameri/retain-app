@@ -18,9 +18,18 @@ import {Component} from '@angular/core'
       <div class="notes col-xs-8">
         <div class="row between-xs">
           <note-card
-            [note]="note"
+            [note]="aNote"
+            *ngFor="let aNote of notes let i = index"
+            (checked)="onNoteChecked(i)"
           >
           </note-card>
+          <!-- todo alternative (could also use aNote instead of $event)-->
+          <!--<note-card-->
+            <!--[note]="aNote"-->
+            <!--*ngFor="let aNote of notes"-->
+            <!--(checked)="onNoteChecked($event)"-->
+          <!--&gt;-->
+          <!--</note-card>-->
         </div>
       </div>
     </div>
@@ -28,9 +37,31 @@ import {Component} from '@angular/core'
 })
 
 export class Notes{
-    note = {
-        title: 'this is a note',
-        value: 'eat some food',
-        color: 'lightblue'
+    notes = [
+        {
+            title: 'Chore',
+            value: 'eat some food',
+            color: 'lightblue'
+        },
+        {
+            title: 'Cook',
+            value: 'cook some food',
+            color: 'red'
+        },
+        {
+            title: 'Dog',
+            value: 'walk it',
+            color: 'yellow'
+        }
+    ]
+
+    // todo use Note type
+    onNoteChecked(i: number){
+        this.notes.splice(i, 1);
     }
+
+    // todo alternative...
+    // onNoteChecked(note: any){
+    //     this.notes.splice(this.notes.indexOf(note), 1);
+    // }
 }
