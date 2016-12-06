@@ -10,8 +10,8 @@ export class NoteService {
 
     constructor(private api:ApiService){}
 
-    createNote(note){
-        this.api.post(this.path, note);
+    createNote(note): Observable<any>{
+        return this.api.post(this.path, note);
     }
 
     getNotes(): Observable<any>{

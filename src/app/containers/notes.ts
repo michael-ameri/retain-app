@@ -1,4 +1,5 @@
 import {Component} from '@angular/core'
+import {NoteService} from "../services/notes";
 
 @Component({
     selector: 'notes-container',
@@ -19,17 +20,10 @@ import {Component} from '@angular/core'
         <div class="row between-xs">
           <note-card
             [note]="aNote"
-            *ngFor="let aNote of notes let i = index"
-            (checked)="onNoteChecked(i)"
+            *ngFor="let aNote of notes"
+            (checked)="onNoteChecked($event)"
           >
           </note-card>
-          <!-- todo alternative (could also use aNote instead of $event)-->
-          <!--<note-card-->
-            <!--[note]="aNote"-->
-            <!--*ngFor="let aNote of notes"-->
-            <!--(checked)="onNoteChecked($event)"-->
-          <!--&gt;-->
-          <!--</note-card>-->
         </div>
       </div>
     </div>
@@ -37,35 +31,24 @@ import {Component} from '@angular/core'
 })
 
 export class Notes{
-    notes = [
-        {
-            title: 'Chore',
-            value: 'eat some food',
-            color: 'lightblue'
-        },
-        {
-            title: 'Cook',
-            value: 'cook some food',
-            color: 'red'
-        },
-        {
-            title: 'Dog',
-            value: 'walk it',
-            color: 'yellow'
-        }
-    ];
+    notes = [];
+
+    constructor(private noteService:NoteService){
+        this.noteService.getNotes()
+            .subscribe(resp => this.notes = resp.data);
+    }
 
     // todo use Note type
     onCreateNote(note) {
-        this.notes.push(note);
+        this.noteService.createNote(note)
+            .subscribe(note => this.notes.push(note));
     }
 
-    onNoteChecked(i: number){
-        this.notes.splice(i, 1);
+    onNoteChecked(note){
+        this.noteService.completeNote(note)
+            .subscribe(note => {
+                const i = this.notes.findIndex(localNote => localNote.id === note.id);
+                this.notes.splice(i, 1);
+            })
     }
-
-    // todo alternative...
-    // onNoteChecked(note: any){
-    //     this.notes.splice(this.notes.indexOf(note), 1);
-    // }
 }
